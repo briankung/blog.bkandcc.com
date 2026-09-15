@@ -6,6 +6,9 @@
     <h1 class="post-title">{{ page.title }}</h1>
     {% set post = page %}{% include "partials/post-meta.html" %}
   </header>
+  {% if page.extra.cover_image %}
+  <img class="post-cover" src="/assets/images/{{ page.extra.cover_image }}" alt="">
+  {% endif %}
   <div class="post-content">
     {{ page.content | safe }}
   </div>

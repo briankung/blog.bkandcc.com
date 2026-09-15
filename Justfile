@@ -107,7 +107,8 @@ import target:
     path=$(sed -nE 's/^path = "([^"]+)"/\1/p' "$post" | head -1)
     cp "$post" "content/$name"
     git -C "$src" rm -q "content/$name"
-    for img in $(grep -oE '/assets/images/[^) "]+' "content/$name" | sort -u); do
+    cover=$(sed -nE 's/^cover_image = "([^"]+)"/\/assets\/images\/\1/p' "content/$name")
+    for img in $( { grep -oE '/assets/images/[^) "]+' "content/$name"; echo "$cover"; } | grep . | sort -u); do
         if [ -f "$src/static$img" ]; then
             mkdir -p "static/$(dirname "$img")"
             cp "$src/static$img" "static$img"
