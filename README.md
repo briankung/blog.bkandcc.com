@@ -61,7 +61,7 @@ static/              CNAME + assets/images/ (served as /assets/images/...)
 
 The site builds on every push to `main` via Cloudflare Pages.
 
-**One-time setup** (mirrors briankung.dev; not done yet):
+**One-time setup** (mirrors briankung.dev; done 2026-09-14 via the Cloudflare API, recorded here for reference). Project name is `blog-bkandcc-com`, so the fallback hostname is `blog-bkandcc-com.pages.dev`:
 
 1. Create the GitHub repo and push: `gh repo create briankung/blog.bkandcc.com --public --source . --push`.
 2. Cloudflare dashboard → Workers & Pages → **Create application → Pages → Connect to Git**, pick `blog.bkandcc.com`.
@@ -76,7 +76,7 @@ The site builds on every push to `main` via Cloudflare Pages.
 
    | Type  | Host   | Value                        | TTL       |
    |-------|--------|------------------------------|-----------|
-   | CNAME | `blog` | `<project-name>.pages.dev`   | Automatic |
+   | CNAME | `blog` | `blog-bkandcc-com.pages.dev` | Automatic |
 
    Then back in the Pages custom-domain screen, click through the verification; it flips to Active once the CNAME propagates (the `.pages.dev` target serves the TLS certificate).
 
