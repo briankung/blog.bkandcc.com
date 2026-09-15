@@ -1,6 +1,6 @@
 base_url = "https://blog.bkandcc.com"
 title = "bkandcc"
-description = "Notes from the Kung household."
+description = "Notes from Brian and Cici."
 default_language = "en"
 generate_feeds = true
 feed_filenames = ["atom.xml"]
