@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ taxonomy.name | capitalize }}</h1>
+<ul>
+  {% for term in terms %}
+    <li><a href="{{ term.permalink | replace(from=config.base_url, to='') | safe }}">{% if taxonomy.name == "tags" %}#{% endif %}{{ term.name }}</a> ({{ term.pages | length }})</li>
+  {% endfor %}
+</ul>
+{% endblock %}

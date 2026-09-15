@@ -1,0 +1,5 @@
+public/
+.DS_Store
+_import/
+.zola-serve.pid
+.zola-serve.log

@@ -1,0 +1,23 @@
+<div class="post-meta">
+  <span class="post-author">By {{ post.extra.author | default(value=config.extra.author) }}</span>
+  <span class="post-date">
+    <time datetime="{{ post.date }}">
+      {{ post.date | date(format="%B %-d, %Y") }}
+    </time>
+  </span>
+  {% if post.taxonomies.categories %}
+    <span class="post-categories">
+      in
+      {%- for c in post.taxonomies.categories %}
+        <a href="{{ get_taxonomy_url(kind='categories', name=c) | replace(from=config.base_url, to='') | safe }}">{{ c }}</a>{% if not loop.last %},{% endif %}
+      {%- endfor %}
+    </span>
+  {% endif %}
+  {% if post.taxonomies.tags %}
+    <div class="post-tags">
+      {% for tag in post.taxonomies.tags %}
+        <a class="post-tag" href="{{ get_taxonomy_url(kind='tags', name=tag) | replace(from=config.base_url, to='') | safe }}">#{{ tag }}</a>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="archive-title">{{ term.name }}</h1>
+<ul class="post-list">
+  {% for post in term.pages %}
+    <li class="post-list-item">
+      <h2 class="post-list-title"><a href="{{ post.permalink | replace(from=config.base_url, to='') | safe }}">{{ post.title }}</a></h2>
+      {% set post = post %}{% include "partials/post-meta.html" %}
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}
