@@ -39,11 +39,22 @@ just import public-school-is-a-bad-deal
 Matches a post in `~/Code/briankung.dev/content/` (override with `BRIANKUNG_DEV=/path`), then:
 
 1. copies the `.md` here unchanged, so it keeps its date, slug and `path` (`/YYYY/MM/DD/slug/`) and the URL only changes host;
-2. copies every `/assets/images/...` the post references into `static/`;
+2. copies every `/assets/images/...` the post references, plus its `[extra] cover_image` if set, into `static/`;
 3. `git rm`s both from briankung.dev;
 4. appends `<path> https://blog.bkandcc.com<path> 301` to briankung.dev's `static/_redirects` (Cloudflare Pages reads that file), so old links keep working.
 
-Nothing is committed. Review both repos' diffs, then commit and deploy each.
+Nothing is committed. Review both repos' diffs, grep briankung.dev's `content/` for links to the old URL and point them at the new host, then commit and deploy each. Deploy this repo first so the 301 never lands on a missing page.
+
+### Cover images
+
+Posts may set a featured image in frontmatter:
+
+```toml
+[extra]
+cover_image = "photo.jpeg"   # file under static/assets/images/
+```
+
+`templates/page.html` renders it full-width above the body. This is the WordPress featured image that the briankung.dev migration preserved as `cover_image` but never displayed; imported posts carry it over unchanged.
 
 ## Repo layout
 
@@ -81,6 +92,12 @@ The site builds on every push to `main` via Cloudflare Pages.
    Then back in the Pages custom-domain screen, click through the verification; it flips to Active once the CNAME propagates (the `.pages.dev` target serves the TLS certificate).
 
 `static/CNAME` is kept for portability but Cloudflare Pages ignores it.
+
+The project, build config, env vars, and custom domain were actually created with the Cloudflare API through the `cloudflare` Claude Code plugin rather than the dashboard; the steps above are the dashboard equivalents. Only the Namecheap CNAME was done by hand.
+
+Verifying from this Mac: macOS caches a negative DNS answer for a while, so `curl https://blog.bkandcc.com` can fail with "Could not resolve host" right after the record is created even though `dig` sees it. `sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder` clears it, or bypass with `curl --resolve blog.bkandcc.com:443:<pages.dev IP>`.
+
+**www / apex:** `www.bkandcc.com` and `bkandcc.com` currently have no DNS records. `www` can be another CNAME to the Pages hostname after adding it as a custom domain on the project. The apex cannot be a CNAME at Namecheap, and Pages only accepts an apex when the zone is on Cloudflare DNS, so use a Namecheap URL Redirect Record (`@` → `https://www.bkandcc.com`, unmasked 301) or a small Caddy redirect on the invites host.
 
 **Every push:**
 
